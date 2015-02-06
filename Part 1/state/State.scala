@@ -32,14 +32,33 @@ def randomPair(rng: RNG): (Int, Int) = {
   (a, b)
 }
 
+// 6.1
 def nonNegativeInt(rng: RNG): (Int, RNG) = {
   val (a, rng2) = rng.nextInt
   if(a >= 0 && a < Int.MaxValue) (a, rng2)
   else nonNegativeInt(rng2)
 }
 
+// 6.2
 def double(rng: RNG): (Double, RNG) = {
   val (a, rng2) = nonNegativeInt(rng)
   if(a >= 0 && a < 1) (a.toDouble, rng2)
   else double(rng2)
+}
+
+// 6.3
+def intDouble(rng: RNG): ((Int,Double), RNG) = {
+  val (a, rng2) = rng.nextInt
+  val (b, rng3) = rng2.nextInt
+  ((a, b.toDouble), rng3)
+}
+def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+  val ((i, d), rng2) = intDouble(rng)
+  ((d, i), rng2)
+}
+def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+  val (a, rng2) = rng.nextInt
+  val (b, rng2) = rng.nextInt
+  val (c, rng2) = rng.nextInt
+  (a.toDouble, b.toDouble, c.toDouble)
 }
