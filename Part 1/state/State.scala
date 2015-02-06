@@ -37,3 +37,9 @@ def nonNegativeInt(rng: RNG): (Int, RNG) = {
   if(a >= 0 && a < Int.MaxValue) (a, rng2)
   else nonNegativeInt(rng2)
 }
+
+def double(rng: RNG): (Double, RNG) = {
+  val (a, rng2) = nonNegativeInt(rng)
+  if(a >= 0 && a < 1) (a.toDouble, rng2)
+  else double(rng2)
+}
