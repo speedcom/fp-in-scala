@@ -58,9 +58,9 @@ def doubleInt(rng: RNG): ((Double,Int), RNG) = {
 }
 def double3(rng: RNG): ((Double,Double,Double), RNG) = {
   val (a, rng2) = rng.nextInt
-  val (b, rng2) = rng.nextInt
-  val (c, rng2) = rng.nextInt
-  (a.toDouble, b.toDouble, c.toDouble)
+  val (b, rng3) = rng2.nextInt
+  val (c, rng4) = rng3.nextInt
+  ((a.toDouble, b.toDouble, c.toDouble), rng4)
 }
 
 // 6.4
@@ -70,8 +70,17 @@ def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
   else {
     val (a, rng2) = rng.nextInt
     val (xs, rng3) = ints(count-1)(rng2)
-    (a :: xs, rng3)
+    (a :: xs, rng3  )
   }
 }
+
+type Rand[+A] = RNG => (A, RNG)
+
+val int: Rand[Int] = _.nextInt
+def unit[A](a: A): Rand[A] = rng => (a, rng)
+
+
+
+
 
 
