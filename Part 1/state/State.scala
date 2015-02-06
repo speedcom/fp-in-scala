@@ -62,3 +62,16 @@ def double3(rng: RNG): ((Double,Double,Double), RNG) = {
   val (c, rng2) = rng.nextInt
   (a.toDouble, b.toDouble, c.toDouble)
 }
+
+// 6.4
+def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+  if(count == 0)
+    (Nil, rng)
+  else {
+    val (a, rng2) = rng.nextInt
+    val (xs, rng3) = ints(count-1)(rng2)
+    (a :: xs, rng3)
+  }
+}
+
+
