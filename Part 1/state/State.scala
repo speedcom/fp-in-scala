@@ -100,8 +100,13 @@ val randDoubleInt: Rand[(Int, Double)] = both(double, int)
 // 6.7
 def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = fs.foldRight(unit(List[A]()))((f, acc) => map2(f, acc)(_ :: _))
 
+def nonNegativeLessThan(n: Int): Rand[Int] = ???
 
-
+// 6.8
+def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = rng => {
+  val (a, rng2) = f(rng)
+  g(a)(rng2)
+}
 
 
 
