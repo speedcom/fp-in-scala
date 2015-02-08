@@ -94,7 +94,8 @@ def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = rng => {
 
 def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] = map2(ra,rb)((_,_))
 
-
+val randIntDouble: Rand[(Int, Double)] = both(int, double)
+val randDoubleInt: Rand[(Int, Double)] = both(double, int)
 
 
 
