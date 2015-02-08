@@ -97,7 +97,8 @@ def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] = map2(ra,rb)((_,_))
 val randIntDouble: Rand[(Int, Double)] = both(int, double)
 val randDoubleInt: Rand[(Int, Double)] = both(double, int)
 
-
+// 6.7
+def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = fs.foldRight(unit(List[A]()))((f, acc) => map2(f, acc)(_ :: _))
 
 
 
