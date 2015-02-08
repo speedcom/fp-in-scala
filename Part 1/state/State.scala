@@ -108,7 +108,9 @@ def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = rng => {
   g(a)(rng2)
 }
 
-
+// 6.9
+def _map[A,B](s: Rand[A])(f: A => B): Rand[B] = flatMap(s)(a => rng => (f(a), rng))
+def _map[A,B](s: Rand[A])(f: A => B): Rand[B] = flatMap(s)(a => unit(f(a)))
 
 
 
