@@ -34,16 +34,14 @@ def randomPair(rng: RNG): (Int, Int) = {
 
 // 6.1
 def nonNegativeInt(rng: RNG): (Int, RNG) = {
-  val (a, rng2) = rng.nextInt
-  if(a >= 0 && a < Int.MaxValue) (a, rng2)
-  else nonNegativeInt(rng2)
+  val (i, r) = rng.nextInt
+  (if (i < 0) -(i + 1) else i, r)
 }
 
 // 6.2
 def double(rng: RNG): (Double, RNG) = {
-  val (a, rng2) = nonNegativeInt(rng)
-  if(a >= 0 && a < 1) (a.toDouble, rng2)
-  else double(rng2)
+  val (i, r) = nonNegativeInt(rng)
+  (i / (Int.MaxValue.toDouble + 1), r)
 }
 
 // 6.3
@@ -93,6 +91,20 @@ def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = rng => {
   val (b, rng3) = rb(rng2)
   (f(a,b), rng3)
 }
+
+def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] = map2(ra,rb)((_,_))
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
