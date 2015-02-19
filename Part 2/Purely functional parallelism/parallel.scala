@@ -11,6 +11,10 @@ def sum(ints: IndexedSeq[Int]): Int = {
   }
 }
 
-
 // EX 7.1
 Par.map2[A,B,C](pa: Par[A], Par[B])(f: (A,B) => C): Par[C] = ???
+
+def unit[A](a: => A): Par[A]
+def get[A](a: Par[A]): A
+def fork[A](a: => Par[A]): Par[A]
+
