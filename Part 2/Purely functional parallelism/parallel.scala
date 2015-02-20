@@ -22,5 +22,22 @@ def fork[A](a: => Par[A]): Par[A] = ???
 // EX 7.2
 import java.util.concurrent._
 
-trait Par[A] = ExecutorService => Future[A]
-def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
+// basic implementation for Par
+object Par {
+
+  type Par[A] = ExecutorService => Future[A]
+
+  // `unit` is represented as a function that returns a `UnitFuture`, which is a simple implementation of `Future`
+  // that just wraps a constant value. It doesn't use the `ExecutorService` at all. It's always done and can't be cancelled.
+  // Its `get` method simply returns the value that we gave it.
+  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
+
+  def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
+
+  private case class UnitFuture[A](get: A) extends Future[A] {
+    def isDone() = true
+    def isCancelled() = !isDone()
+    def cancel(evenIfRunning: Boolean): Boolean = false
+    def get(timeout: Long, units: TimeUnit) = get
+  }
+}
