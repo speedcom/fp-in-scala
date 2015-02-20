@@ -19,3 +19,8 @@ def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 def get[A](a: Par[A]): A = ???
 def fork[A](a: => Par[A]): Par[A] = ???
 
+// EX 7.2
+import java.util.concurrent._
+
+trait Par[A] = ExecutorService => Future[A]
+def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
