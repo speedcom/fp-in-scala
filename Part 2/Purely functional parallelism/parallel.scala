@@ -12,8 +12,6 @@ def sum(ints: IndexedSeq[Int]): Int = {
 }
 
 // EX 7.1
-Par.map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A,B) => C): Par[C] = ???
-
 def unit[A](a: A): Par[A] = ???
 def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 def get[A](a: Par[A]): A = ???
@@ -40,4 +38,23 @@ object Par {
     def cancel(evenIfRunning: Boolean): Boolean = false
     def get(timeout: Long, units: TimeUnit) = get
   }
+
+  /*
+  map2 doesn’t evaluate the call to f in a separate logical thread, in accord
+  with our design choice of having fork be the sole function in the API for
+  controlling parallelism. We can always do fork(map2(a,b)(f)) if we
+  want the evaluation of f to occur in a separate thread.
+
+  This implementation of map2 does not respect timeouts. It simply passes the
+  ExecutorService on to both Par values, waits for the results of the Futures af and
+  bf, applies f to them, and wraps them in a UnitFuture. In order to respect timeouts,
+  we’d need a new Future implementation that records the amount of time spent evaluating
+  af, and then subtracts that time from the available time allocated for evaluating bf.
+  */
+  def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A,B) => C): Par[C] = (es: ExecutorService) => {
+    val fa = pa(es)
+    val fb = pb(es)
+    UnitFuture(f(fa.get, fb.get))
+  }
+
 }
