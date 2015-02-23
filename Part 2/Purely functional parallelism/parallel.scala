@@ -57,4 +57,8 @@ object Par {
     UnitFuture(f(fa.get, fb.get))
   }
 
+  def fork[A](a: => Par[A]): Par[A] = (es: ExecutorService) => {
+    es.submit(new Callable[A] { def call = a(es).get })
+  }
+
 }
