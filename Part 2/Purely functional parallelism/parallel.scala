@@ -64,4 +64,6 @@ object Par {
   // EX 7.4
   def asyncF[A,B](f: A => B): A => Par[B] = a => unit(f(a))
 
+  def map[A,B](pa: Par[A])(f: A => B) = map2(pa, unit(()))((a, _) => f(a))
+
 }
