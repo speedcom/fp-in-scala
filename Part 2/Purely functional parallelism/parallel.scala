@@ -66,4 +66,6 @@ object Par {
 
   def map[A,B](pa: Par[A])(f: A => B) = map2(pa, unit(()))((a, _) => f(a))
 
+  def sortPar(parList: Par[List[Int]]) = map(parList)(_.sorted)
+
 }
