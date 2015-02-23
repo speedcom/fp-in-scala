@@ -61,4 +61,7 @@ object Par {
     es.submit(new Callable[A] { def call = a(es).get })
   }
 
+  // EX 7.4
+  def asyncF[A,B](f: A => B): A => Par[B] = a => unit(f(a))
+
 }
