@@ -9,12 +9,28 @@ val stringMonoid = new Monoid[String] {
   def zero = ""
 }
 
-val intMonoid = new Monoid[Int] {
+def listMonoid[A] = new Monoid[List[A]] {
+  def op(l1: List[A], l2: List[A]) = l1 ++ l2
+  def zero = Nil
+}
+
+// EX 10.1
+val intAddtion = new Monoid[Int] {
   def op(i1: Int, i2: Int) = i1 + i2
   def zero = 0
 }
 
-def listMonoid[A] = new Monoid[List[A]] {
-  def op(l1: List[A], l2: List[A]) = l1 ++ l2
-  def zero = Nil
+val intMultiplication = new Monoid[Int] {
+  def op(i1: Int, i2: Int) = i1 * i2
+  def zero = 1
+}
+
+val booleanOr: Monoid[Boolean] {
+  def op(i1: Boolean, i2: Boolean) = i1 || i2
+  def zero = false
+}
+
+val booleanOr: Monoid[Boolean] {
+  def op(i1: Boolean, i2: Boolean) = i1 && i2
+  def zero = true
 }
