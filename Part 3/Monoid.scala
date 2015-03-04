@@ -50,6 +50,7 @@ def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
 }
 
 
+def concatenate[A](l: List[A])(m: Monoid[A]) = l.foldLeft(m.zero)(m.op)
 
 
 
