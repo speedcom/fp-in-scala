@@ -3,7 +3,7 @@ trait Monoid[A] {
   def zero: A
 }
 
-// exemplary instnaces
+// exemplary instances
 val stringMonoid = new Monoid[String] {
   def op(s1: String, s2: String) = s1 + s2
   def zero = ""
@@ -30,7 +30,13 @@ val booleanOr: Monoid[Boolean] {
   def zero = false
 }
 
-val booleanOr: Monoid[Boolean] {
+val booleanAnd: Monoid[Boolean] {
   def op(i1: Boolean, i2: Boolean) = i1 && i2
   def zero = true
+}
+
+// EX 10.2
+def optionMonoid[A]: Monoid[Option[A]] = {
+  def op(op1: Option[A], op2: Option[A]) = op1 orElse op2
+  def zero = None
 }
