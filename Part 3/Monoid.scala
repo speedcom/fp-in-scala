@@ -52,6 +52,9 @@ def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
 
 def concatenate[A](l: List[A])(m: Monoid[A]) = l.foldLeft(m.zero)(m.op)
 
+// EX 10.5
+def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B = as.foldLeft(m.zero)((a, b) => m.op(b, f(a))
+
 
 
 
