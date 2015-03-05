@@ -49,14 +49,21 @@ def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
   def zero: A => A = a => a
 }
 
-
 def concatenate[A](l: List[A])(m: Monoid[A]) = l.foldLeft(m.zero)(m.op)
 
 // EX 10.5
-def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B = as.foldLeft(m.zero)((a, b) => m.op(b, f(a))
+def foldMap[A,B](as: List[A], m: Monoid[B])(f: A => B): B = as.foldLeft(m.zero)((a, b) => m.op(a, f(b)))
 
-
-
+// EX 10.6
+def foldMapV[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): B = {
+  val l = v.length
+  if(l > 1) {
+    val (is1, is2) = v.splitAt(l/2)
+    m.op(foldMapV(is1, m)(f), foldMapV(is2, m)(f))
+  } else {
+    foldMap(v, m)(f)
+  }
+}
 
 
 
