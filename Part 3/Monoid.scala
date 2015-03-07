@@ -52,9 +52,9 @@ def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
 def concatenate[A](l: List[A])(m: Monoid[A]) = l.foldLeft(m.zero)(m.op)
 
 // EX 10.5
-def foldMap[A,B](as: List[A], m: Monoid[B])(f: A => B): B = as.foldLeft(m.zero)((a, b) => m.op(a, f(b)))
+def foldMap[A,B](as: Seq[A], m: Monoid[B])(f: A => B): B = as.foldLeft(m.zero)((a, b) => m.op(a, f(b)))
 
-// EX 10.6
+// EX 10.7
 def foldMapV[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): B = {
   val l = v.length
   if(l > 1) {
@@ -64,6 +64,33 @@ def foldMapV[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): B = {
     foldMap(v, m)(f)
   }
 }
+
+// EX 10.9
+def orderingIntMonoid(is: IndexedSeq[Int]) = ???
+
+sealed trait WC
+case class Stub(chars: String) extends WC
+case class Part(lStub: String, words: Int, rStub: String) extends WC
+
+// EX 10.10
+val wcMonoid: Monoid[WC] = new Monoid[WC] {
+  def op(wc1: WC, wc2: WC): WC = (wc1, wc2) match {
+    case (Stub(ch1), Stub(ch2))       => Stub(ch1+ch2)
+    case (Stub(ch1), Part(ls, w, rs)) => Part(ch1 + ls, w, rs)
+    case (Part(ls, w, rs), Stub(ch2)) => Part(ls, w, rs+ch2)
+    case (Part(l1, w1, r1), Part(l2, w2, r2)) => Part(l1, w1 + (if ((r1 + l2).isEmpty) 0 else 1) + w2, r2)
+  }
+
+  def zero: WC = Stub("")
+}
+
+
+
+
+
+
+
+
 
 
 
