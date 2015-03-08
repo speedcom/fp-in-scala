@@ -98,6 +98,12 @@ object ListFoldable extends Foldable[List] {
   def foldMap[A,B](as: List[A])(f: A => B)(mb: Monoid[B]): B = as.foldLeft(mb.zero)((b, a) => mb.op(b, f(a)))
 }
 
+object IndexedSeqFoldable extends Foldable[IndexedSeq] {
+  def foldRight[A,B](as: IndexedSeq[A])(z: B)(f: (A,B) => B): B = as.foldRight(z)(f)
+  def foldLeft[A,B](as: IndexedSeq[A])(z: B)(f: (B,A) => B): B = as.foldLeft(z)(f)
+  def foldMap[A,B](as: IndexedSeq[A])(f: A => B)(mb: Monoid[B]): B = foldMapV(as, mb)(f)
+}
+
 
 
 
