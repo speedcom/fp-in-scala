@@ -15,7 +15,7 @@ def listMonoid[A] = new Monoid[List[A]] {
 }
 
 // EX 10.1
-val intAddtion = new Monoid[Int] {
+val intAddition = new Monoid[Int] {
   def op(i1: Int, i2: Int) = i1 + i2
   def zero = 0
 }
@@ -91,8 +91,12 @@ trait Foldable[F[_]] {
   def concatenate[A](as: F[A])(m: Monoid[A]): A = foldLeft(as)(m.zero)(m.op)
 }
 
-
-
+// EX 10.12
+object ListFoldable extends Foldable[List] {
+  def foldRight[A,B](as: List[A])(z: B)(f: (A,B) => B): B = as.foldRight(z)(f)
+  def foldLeft[A,B](as: List[A])(z: B)(f: (B,A) => B): B = as.foldLeft(z)(f)
+  def foldMap[A,B](as: List[A])(f: A => B)(mb: Monoid[B]): B = as.foldLeft(mb.zero)((b, a) => mb.op(b, f(a)))
+}
 
 
 
