@@ -104,6 +104,11 @@ object IndexedSeqFoldable extends Foldable[IndexedSeq] {
   def foldMap[A,B](as: IndexedSeq[A])(f: A => B)(mb: Monoid[B]): B = foldMapV(as, mb)(f)
 }
 
+object StreamFoldable extends Foldable[Stream] {
+  def foldRight[A,B](as: Stream[A])(z: B)(f: (A,B) => B): B = as.foldRight(z)(f)
+  def foldLeft[A,B](as: Stream[A])(z: B)(f: (B,A) => B): B = as.foldLeft(z)(f)
+  def foldMap[A,B](as: Stream[A])(f: A => B)(mb: Monoid[B]): B = ???
+}
 
 
 
