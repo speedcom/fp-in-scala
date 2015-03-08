@@ -76,4 +76,7 @@ object Par {
     sequence(pa)
   }
 
+  // EX 7.6
+  def parFilter[A](as: List[A])(f: A => Boolean): Par[List[A]] = ???
+
 }
