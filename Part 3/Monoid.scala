@@ -144,7 +144,13 @@ def productMonoid[A,B](ma: Monoid[A], mb: Monoid[B]): Monoid[(A,B)] = new Monoid
   def op(m1: (A,B), m2: (A,B)): (A,B) = (ma.op(m1._1, m2._1), mb.op(m1._2, m2._2))
 }
 
-
+def mapMergeMonoid[K,V](V: Monoid[V]): Monoid[Map[K, V]] =
+  new Monoid[Map[K, V]] {
+    def zero = Map[K,V]()
+    def op(a: Map[K, V], b: Map[K, V]) = (a.keySet ++ b.keySet).foldLeft(zero) { (acc,k) =>
+      acc.updated(k, V.op(a.getOrElse(k, V.zero), b.getOrElse(k, V.zero)))
+    }
+}
 
 
 
