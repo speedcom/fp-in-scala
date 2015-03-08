@@ -138,7 +138,11 @@ object OptionFoldable extends Foldable[Option] {
   def foldMap[A,B](as: Option[A])(f: A => B)(mb: Monoid[B]): B = as.map(f).getOrElse(mb.zero)
 }
 
-
+// EX 10.16
+def productMonoid[A,B](ma: Monoid[A], mb: Monoid[B]): Monoid[(A,B)] = new Monoid[(A,B)] {
+  def zero: (A,B) = (ma.zero, mb.zero)
+  def op(m1: (A,B), m2: (A,B)): (A,B) = (ma.op(m1._1, m2._1), mb.op(m1._2, m2._2))
+}
 
 
 
