@@ -110,7 +110,27 @@ object StreamFoldable extends Foldable[Stream] {
   def foldMap[A,B](as: Stream[A])(f: A => B)(mb: Monoid[B]): B = ???
 }
 
+sealed trait Tree[+A]
+case class Leaf[A](value: A) extends Tree[A]
+case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
+// EX 10.13
+object TreeFoldable extends Foldable[Tree] {
+  def foldRight[A,B](as: Tree[A])(z: B)(f: (A,B) => B): B = as match {
+    case Leaf(v) => f(v, z)
+    case Branch(lt, rt) => foldRight(lt)(foldRight(rt)(z)(f))(f)
+  }
+  def foldLeft[A,B](as: Tree[A])(z: B)(f: (B,A) => B): B = as match {
+    case Leaf(v) => f(z, v)
+    case Branch(lt, rt) => foldLeft(rt)(foldLeft(lt)(z)(f))(f)
+  }
+
+  def foldMap[A,B](as: Tree[A])(f: A => B)(mb: Monoid[B]): B = as match {
+    case Leaf(v) => f(v)
+    case Branch(lt, rt) => mb.op(foldMap(lt)(f)(mb), foldMap(rt)(f)(mb))
+  }
+
+}
 
 
 
