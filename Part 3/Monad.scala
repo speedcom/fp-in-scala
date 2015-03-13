@@ -28,5 +28,6 @@ trait Monad[F[_]] extends Functor[F] {
   def filterM[A](ms: List[A])(f: A => F[Boolean]): F[List[A]] =
     ms.foldRight(unit(List[A]()))((a, fla) => map2(f(a), fla)((b, la) => if(b) a :: la else la) )
   def compose[A,B,C](f: A => F[B], g: B => F[C]): A => F[C] = a => flatMap(f(a))(g)
+  def _flatMap[A,B](fa: F[A])(f: A => F[B]): F[B] = compose((: Unit) => fa, f)(())
 }
 
