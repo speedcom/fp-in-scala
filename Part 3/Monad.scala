@@ -25,7 +25,6 @@ trait Monad[F[_]] extends Functor[F] {
     lma.foldRight(unit(List[A]()))((fa, fla) => map2(fa, fla)(_ :: _))
   def traverse[A,B](la: List[A])(f: A => F[B]): F[List[B]] = sequence(la.map(f))
   def replicateM[A](n: Int, ma: F[A]): F[List[A]] = sequence(List.fill(n)(ma))
+  def filterM[A](ms: List[A])(f: A => F[Boolean]): F[List[A]] =
+    ms.foldRight(unit(List[A]()))((a, fla) => map2(f(a), fla)((b, la) => if(b) a :: la else la) )
 }
-
-
-
