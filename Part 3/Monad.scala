@@ -32,3 +32,8 @@ trait Monad[F[_]] extends Functor[F] {
   def join[A](mma: F[F[A]]): F[A] = flatMap(mma)(ma => ma)
   def __flatMap[A,B](fa: F[A])(f: A => F[B]): F[B] = join(map(fa)(f))
 }
+
+case class Id[A](value: A) {
+  def map[B](f: A => B): Id[B] = Id(f(value))
+  def flatMap[B](f: A => Id[B]): Id[B] = f(value)
+}
