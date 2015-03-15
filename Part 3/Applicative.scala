@@ -9,4 +9,5 @@ trait Applicative[F[_]] extends Functor[F] {
     as.foldRight(unit(List[B]()))((a, fbs) => map2(f(a), fbs)(_ :: _))
 
   def sequence[A](fas: List[F[A]]): F[List[A]] = traverse(fas)(fa => fa)
+  def replicateM[A](n: Int, fa: F[A]): F[List[A]] = sequence(List.fill(n)(fa))
 }
