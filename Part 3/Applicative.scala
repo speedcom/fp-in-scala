@@ -35,5 +35,7 @@ object Applicative {
     def map2[A,B,C](as: Stream[A], ab: Stream[B])(f: (A,B) => C): Stream[C] =
       as zip ab f.tupled
 
+    def sequence[A](a: List[Stream[A]]): Stream[List[A]] =
+      a.foldRight(unit(List[A]()))((sa, l) => map2(sa, l)(_ :: _))
   }
 }
