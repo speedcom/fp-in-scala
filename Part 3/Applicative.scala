@@ -26,3 +26,14 @@ trait Monad[F[_]] extends Applicative[F] {
   def map[B](fa: F[A])(f: A => B): F[B] = flatMap(fa)((a: A) => unit(f(a)))
   def map2[A,B,C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = flatMap(fa)(a => map(fb)(b => f(a,b)))
 }
+
+object Applicative {
+  val streamApplicative = new Applicative[Stream] {
+
+    def unit[A](a: => A): Stream[A] = Stream.continually(a)
+
+    def map2[A,B,C](as: Stream[A], ab: Stream[B])(f: (A,B) => C): Stream[C] =
+      as zip ab f.tupled
+
+  }
+}
