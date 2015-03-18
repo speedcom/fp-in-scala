@@ -40,11 +40,16 @@ object Applicative {
   }
 }
 
+def eitherMonad[E]: Monad[({type f[x] = Either[E, x]})#f]
+
 sealed trait Validation[+E, +A]
-
 case class Failure[E](head: E, tail: Vector[E] = Vector()) extends Validation[E, Nothing]
-
 case class Success[A](a: A) extends Validation[Nothing, A]
+
+
+
+
+
 
 
 
