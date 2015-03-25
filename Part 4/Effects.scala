@@ -62,3 +62,9 @@ def converter: IO[Unit] = for {
   _ <- PrintLine(fahrenheitToCelsius(d).toString)
 } yield ()
 
+// An `IO[Unit]` that reads a line from the console and echoes it back.
+val echo = ReadLine.flatMap(PrintLine)
+
+// Parses an `Int` by reading a line from the console.
+val readInt = ReadLine.map(_.toInt)
+
