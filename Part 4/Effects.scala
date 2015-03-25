@@ -50,7 +50,15 @@ sealed trait IO[A] { self =>
 object IO extends Monad[IO] {
   def unit[A](a: => A): IO[A] = new IO[A] { def run: A = a }
   def flatMap[A,B](fa: IO[A])(f: A => IO[B]): IO[B] = fa.flatMap(f)
-  def apply[A](a: => A): IO[A] = unit(a)
+  def apply[A](a: => A): IO[A] = unit(a) // syntax for IO { ... }
+
+  def ref[A](a: A): IO[IORef[A]] = IO { new IORef(a) }
+  sealed class IORef[A](var value: A) {
+    def set(a: A): IO[A] = IO { value = a; a }
+    def get: IO[A] = IO { value }
+    def modify(f: A => A): IO[A] = get flatMap { a => set(f(a)) }
+  }
+
 }
 
 def ReadLine: IO[String] = IO { readLine }
